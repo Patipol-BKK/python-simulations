@@ -4,12 +4,12 @@ import threading
 import time
 
 # Declare discrete constants
-LENGTH = 100
-NODES = 521									# Also includes end points
+LENGTH = 1000
+NODES = 1001								# Also includes end points
 THREAD_COUNT = 4
 chunk = NODES/THREAD_COUNT
 
-delta_x = LENGTH/(NODES - 1)				# Step size
+delta_x = 1									# Step size
 delta_t = 0.1								# Time step size
 
 # Define position array
@@ -78,13 +78,14 @@ def simulate_init(pos, fixed, dx, dt, c, order):
 count = 0
 
 fixed = get_pixalated_circle(NODES)
-# fixed[300][192+300] = 1
-# fixed[300][95+300] = 1
-# fixed[300][52+300] = 1
-fixed[int((NODES-1)/2)][75+int((NODES-1)/2)] = 1
-# fixed[int((NODES-1)/2)][50+int((NODES-1)/2)] = 1
-# fixed[int((NODES-1)/2)][35+int((NODES-1)/2)] = 1
-# fixed[int((NODES-1)/2)][20+int((NODES-1)/2)] = 1
+# fixed[int((NODES-1)/2)][302+int((NODES-1)/2)] = 1
+# fixed[int((NODES-1)/2)][191+int((NODES-1)/2)] = 1
+# fixed[int((NODES-1)/2)][96+int((NODES-1)/2)] = 1
+# fixed[int((NODES-1)/2)][52+int((NODES-1)/2)] = 1
+fixed[int((NODES-1)/2)][15+int((NODES-1)/2)] = 1
+fixed[int((NODES-1)/2)][10+int((NODES-1)/2)] = 1
+fixed[int((NODES-1)/2)][7+int((NODES-1)/2)] = 1
+fixed[int((NODES-1)/2)][4+int((NODES-1)/2)] = 1
 
 simulate_init(pos, fixed, delta_x, delta_t, 1, order)
 order = update_order(order)
@@ -93,8 +94,11 @@ start = time.time()
 val_max = 0
 val_min = 0
 
+est_mean = np.zeros((NODES, NODES), dtype=np.float64)
+est_var = np.zeros((NODES, NODES), dtype=np.float64)
+
 while True:
-	pos[order[1]][int((NODES-1)/2)][int((NODES-1)/2)] = np.sin(count/60)
+	pos[order[1]][int((NODES-1)/2)][int((NODES-1)/2)] = np.sin(count/10)
 	# print(np.sin(count/1000))
 	threads = list()
 	for i in range(THREAD_COUNT):
